@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import Result from './Result';
 
 class Search extends Component {
     constructor(){
         super()
+        this.state ={
+            data: ''
+        }
     }
-
+    
+    
     // function to grab user input
     searchMovies = async(event) =>{
         // event.preventDefault() stops the whole page from refreshing when the function is called
@@ -18,14 +23,28 @@ class Search extends Component {
         // variable for URL
         const url = `https://api.themoviedb.org/3/search/movie?api_key=2f3ba6c35b4aec2ea0bec98575461609&language=en-US&query=${query}&page=1&include_adult=false`
 
-        // tell the function to wait for data using await/fetch
-        const response = await fetch(url)
 
-        // turn the data into JSON format
-        const data = await response.json()
+        // The try...catch statement marks a block of statements to try (try) and specifies a response (catch) should an exception be thrown
+        // Similar to IF and ELSE statements
+        try{
+            // tell the function to wait for data using await/fetch
+            const response = await fetch(url)
 
-        // checking data is being received
-        console.log(data);
+            // turn the data into JSON format
+            const data = await response.json()
+
+            // checking data is being received
+            console.log(data.results[0]);
+
+            // grab the data using setState
+            this.setState({
+                data: data.results[0]
+            })
+
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     render() {
@@ -39,6 +58,8 @@ class Search extends Component {
                     <button className="button" type="submit">Search</button>
 
                 </form>
+                
+                <Result data={this.state.data}/>
             </div>
         );
     }
