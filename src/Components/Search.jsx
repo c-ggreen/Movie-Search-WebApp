@@ -5,6 +5,7 @@ class Search extends Component {
     constructor(){
         super()
         this.state ={
+            userInput:'',
             data: ''
         }
     }
@@ -18,7 +19,7 @@ class Search extends Component {
         // check to see that the function is firing when form is submitted
         console.log("submitting");
 
-        const query = "Jurassic Park"
+        const query = this.state.userInput
 
         // variable for URL
         const url = `https://api.themoviedb.org/3/search/movie?api_key=2f3ba6c35b4aec2ea0bec98575461609&language=en-US&query=${query}&page=1&include_adult=false`
@@ -47,6 +48,10 @@ class Search extends Component {
         }
     }
 
+    handleChange = (event) =>{
+        this.setState({userInput: event.target.value})
+    }
+
     render() {
         return (
             <div>
@@ -54,11 +59,12 @@ class Search extends Component {
                 <form action="" className="form" onSubmit={this.searchMovies}>
 
                     <label className="label" htmlFor="query">Movie Name</label>
-                    <input type="text" name="query" className="input" />
+                    <input type="text" name="query" className="input" value={this.state.userInput} onChange={this.handleChange}/>
                     <button className="button" type="submit">Search</button>
 
                 </form>
                 
+                {/* making a prop that accesses the state */}
                 <Result data={this.state.data}/>
             </div>
         );
